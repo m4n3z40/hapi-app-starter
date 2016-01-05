@@ -13,5 +13,16 @@ server.start(err => {
         throw err;
     }
 
+    if (process.send) {
+        process.send('online');
+    }
+
     console.log('Server running at: ', server.info.uri);
+});
+
+process.on('message', message => {
+    if (message === 'shutdown') {
+        server.stop();
+        process.exit(0);
+    }
 });
