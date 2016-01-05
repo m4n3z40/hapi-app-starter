@@ -1,0 +1,26 @@
+{
+  "name": "hapi-app-starter",
+  "version": "0.0.1",
+  "description": "A Hapi application boilerplate",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "jasmine-node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/m4n3z40/hapi-app-starter.git"
+  },
+  "keywords": [
+    "hapi",
+    "api",
+    "js",
+    "service",
+    "server"
+  ],
+  "author": "Allan Baptista (allan.baptista@ymail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/m4n3z40/hapi-app-starter/issues"
+  },
+  "homepage": "https://github.com/m4n3z40/hapi-app-starter#readme"
+}
