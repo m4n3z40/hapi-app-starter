@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import * as tasksHandlers from '../handlers/tasks';
 
 export default [
@@ -14,12 +15,30 @@ export default [
     {
         method: 'POST',
         path: '/tasks',
-        handler: tasksHandlers.create
+        handler: tasksHandlers.create,
+        config: {
+            validate: {
+                payload: {
+                    id: Joi.number(),
+                    description: Joi.string().required(),
+                    done: Joi.boolean().required()
+                }
+            }
+        }
     },
     {
         method: 'PUT',
         path: '/tasks/{id}',
-        handler: tasksHandlers.update
+        handler: tasksHandlers.update,
+        config: {
+            validate: {
+                payload: {
+                    id: Joi.number().required(),
+                    description: Joi.string().required(),
+                    done: Joi.boolean().required()
+                }
+            }
+        }
     },
     {
         method: 'DELETE',

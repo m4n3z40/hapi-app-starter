@@ -17,7 +17,9 @@ const tasks = [
 ];
 
 export function findById(taskId) {
-    const foundTask = tasks.filter(task => task.id === taskId)[0];
+    const nTaskId = Number(taskId);
+
+    const foundTask = tasks.filter(task => task.id === nTaskId)[0];
 
     if (!foundTask) {
         return Promise.reject(new Error('Task not found'));
@@ -31,8 +33,10 @@ export function getAll() {
 }
 
 export function remove(taskId) {
+    const nTaskId = Number(taskId);
+
     const removed = tasks.some((task, i) => {
-        if (task.id === taskId) {
+        if (task.id === nTaskId) {
             tasks.splice(i, 1);
 
             return true;
@@ -49,18 +53,20 @@ export function remove(taskId) {
 }
 
 export function save(task) {
-    const existingTask = findById(task.id);
+    return findById(task.id)
+        .then(existingTask => {
+            /* eslint-disable no-param-reassign */
+            existingTask.description = task.description;
+            existingTask.done = task.done;
+            /* eslint-enable no-param-reassign */
 
-    if (existingTask) {
-        existingTask.description = task.description;
-        existingTask.done = task.done;
+            return existingTask;
+        })
+        .catch(() => {
+            const taskCopy = Object.assign({}, task, {id: tasks.length + 1});
 
-        return Promise.resolve(existingTask);
-    }
+            tasks.push(taskCopy);
 
-    const taskCopy = Object.assign({}, task, {id: tasks.length + 1});
-
-    tasks.push(taskCopy);
-
-    return Promise.resolve(taskCopy);
+            return Promise.resolve(taskCopy);
+        });
 }
