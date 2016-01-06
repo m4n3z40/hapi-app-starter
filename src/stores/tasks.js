@@ -95,10 +95,8 @@ export function remove(taskId) {
 export function save(task) {
     return findById(task.id)
         .then(existingTask => {
-            /* eslint-disable no-param-reassign */
             existingTask.description = task.description;
             existingTask.done = task.done;
-            /* eslint-enable no-param-reassign */
 
             return existingTask;
         })

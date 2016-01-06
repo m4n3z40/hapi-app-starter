@@ -3,6 +3,7 @@
     "rules": {
         "indent": [2, 4],
         "comma-dangle": [2, "never"],
-        "object-curly-spacing": [1, "never"]
+        "object-curly-spacing": [1, "never"],
+        "no-param-reassign": [2, { "props": false }]
     }
 }
