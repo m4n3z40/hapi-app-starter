@@ -1,5 +1,6 @@
 import Hapi from 'hapi';
 import serverConfig from './configs/server';
+import SimpleLogger from './plugins/SimpleLogger';
 import tasksRoutes from './routes/tasks';
 
 const server = new Hapi.Server();
@@ -18,18 +19,26 @@ server.route(tasksRoutes);
  * @returns {Hapi.Server}
  */
 export default function start(done) {
-    server.start(err => {
+    // Registering plugins
+    // TODO: make this automatic, maybe?
+    server.register({register: SimpleLogger}, (err) => {
         if (err) {
             return done(err);
         }
 
-        if (process.send) {
-            process.send('online');
-        }
+        server.start(err => {
+            if (err) {
+                return done(err);
+            }
 
-        console.log('Server running at: ', server.info.uri);
+            if (process.send) {
+                process.send('online');
+            }
 
-        done();
+            console.log('Server running at: ', server.info.uri);
+
+            done();
+        });
     });
 
     return server;
