@@ -4,25 +4,34 @@ import tasksRoutes from './routes/tasks';
 
 const server = new Hapi.Server();
 
+// Configuring server connection
 server.connection(serverConfig);
 
+// Registering routes
+// TODO: make this automatic
 server.route(tasksRoutes);
 
-server.start(err => {
-    if (err) {
-        throw err;
-    }
+/**
+ * Start server, we expose this to start the server else where
+ *
+ * @param {function} done a callback to be executed when server hast finished starting
+ * @returns {Hapi.Server}
+ */
+export default function start(done) {
+    server.start(err => {
+        if (err) {
+            return done(err);
+        }
 
-    if (process.send) {
-        process.send('online');
-    }
+        if (process.send) {
+            process.send('online');
+        }
 
-    console.log('Server running at: ', server.info.uri);
-});
+        console.log('Server running at: ', server.info.uri);
 
-process.on('message', message => {
-    if (message === 'shutdown') {
-        server.stop();
-        process.exit(0);
-    }
-});
+        done();
+    });
+
+    return server;
+}
+

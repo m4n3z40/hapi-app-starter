@@ -1,5 +1,11 @@
 import * as tasksStore from '../stores/tasks';
 
+/**
+ * Handler for the create task route
+ *
+ * @param {Hapi.Request} request
+ * @param {Hapi.Reply} reply
+ */
 export function create(request, reply) {
     tasksStore.save(request.payload)
         .then(task => reply({
@@ -9,6 +15,12 @@ export function create(request, reply) {
         }));
 }
 
+/**
+ * Handler for the update task route
+ *
+ * @param {Hapi.Request} request
+ * @param {Hapi.Reply} reply
+ */
 export function update(request, reply) {
     tasksStore.save(request.payload)
         .then(task => reply({
@@ -18,6 +30,12 @@ export function update(request, reply) {
         }));
 }
 
+/**
+ * Handler for the remove task route
+ *
+ * @param {Hapi.Request} request
+ * @param {Hapi.Reply} reply
+ */
 export function remove(request, reply) {
     tasksStore.remove(Number(request.params.id))
         .then(() => reply({
@@ -32,6 +50,12 @@ export function remove(request, reply) {
         }).code(404));
 }
 
+/**
+ * Handler for the get task route
+ *
+ * @param {Hapi.Request} request
+ * @param {Hapi.Reply} reply
+ */
 export function findOne(request, reply) {
     tasksStore.findById(Number(request.params.id))
         .then(task => reply({
@@ -46,6 +70,12 @@ export function findOne(request, reply) {
         }).code(404));
 }
 
+/**
+ * Handler for the get all tasks route
+ *
+ * @param {Hapi.Request} request
+ * @param {Hapi.Reply} reply
+ */
 export function findAll(request, reply) {
     tasksStore.getAll()
         .then(tasks => reply({

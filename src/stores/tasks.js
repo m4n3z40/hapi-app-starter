@@ -1,3 +1,8 @@
+/**
+ * Tasks mocked data
+ *
+ * @type {*[]}
+ */
 const tasks = [
     {
         id: 1,
@@ -16,42 +21,77 @@ const tasks = [
     }
 ];
 
+/**
+ * Find a task by its ID
+ *
+ * @param {number} taskId
+ * @returns {Promise} a promise that resolves if task is found and rejects it when is not
+ */
 export function findById(taskId) {
     const nTaskId = Number(taskId);
 
-    const foundTask = tasks.filter(task => task.id === nTaskId)[0];
+    return new Promise((resolve, reject) => {
+        process.nextTick(() => {
+            const foundTask = tasks.filter(task => task.id === nTaskId)[0];
 
-    if (!foundTask) {
-        return Promise.reject(new Error('Task not found'));
-    }
+            if (!foundTask) {
+                return reject(new Error('Task not found'));
+            }
 
-    return Promise.resolve(foundTask);
+            return resolve(foundTask);
+        });
+    });
 }
 
+/**
+ * Get all tasks available
+ *
+ * @returns {Promise} simulates an async operation returning by a promise
+ */
 export function getAll() {
-    return Promise.resolve(tasks);
+    return new Promise(resolve => {
+        process.nextTick(() => {
+            resolve(tasks);
+        });
+    });
 }
 
+/**
+ * Removes a task
+ *
+ * @param {number} taskId the task id
+ * @returns {Promise} simulates an async operation returning by a promise
+ */
 export function remove(taskId) {
     const nTaskId = Number(taskId);
 
-    const removed = tasks.some((task, i) => {
-        if (task.id === nTaskId) {
-            tasks.splice(i, 1);
+    return new Promise((resolve, reject) => {
+        process.nextTick(() => {
+            const removed = tasks.some((task, i) => {
+                if (task.id === nTaskId) {
+                    tasks.splice(i, 1);
 
-            return true;
-        }
+                    return true;
+                }
 
-        return false;
+                return false;
+            });
+
+            if (!removed) {
+                return reject(new Error('No task was deleted'));
+            }
+
+            resolve();
+        });
     });
-
-    if (!removed) {
-        return Promise.reject(new Error('No task was deleted'));
-    }
-
-    return Promise.resolve();
 }
 
+/**
+ * Saves a task
+ *
+ * @param {Object} task task data to save
+ * @returns {Promise} simulates an async operation returning by a promise
+ */
 export function save(task) {
     return findById(task.id)
         .then(existingTask => {
